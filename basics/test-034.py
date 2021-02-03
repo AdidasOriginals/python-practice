@@ -108,7 +108,7 @@ def main3():
     # 3.开启监听 - 监听客户端连接到服务器
     server.listen(512)
     print('服务器启动开始监听...')
-    with open('./image/dog.jpg', 'rb') as f:
+    with open('image/dog.jpg', 'rb') as f:
         # 将二进制数据处理成base64再编码成字符串
         data = b64encode(f.read()).decode('utf-8')
     while True:
@@ -184,26 +184,26 @@ def main5():
     message['Subject'] = Header('文件+excel+图片', 'utf-8')
     # 读取文件并将文件作为附件添加到邮件消息对象中
     # 文本
-    with open('./data/dog.txt', 'rb') as f:
+    with open('data/dog.txt', 'rb') as f:
         txt = MIMEText(f.read(), 'base64', 'utf-8')
         txt['Content-Type'] = 'text/plain'
         txt['Content-Disposition'] = 'attachment; filename=dog.txt'
         message.attach(txt)
     # Excel
-    with open('./data/test3.xlsx', 'rb') as f:
+    with open('data/test3.xlsx', 'rb') as f:
         xlsx = MIMEText(f.read(), 'base64', 'utf-8')
         xlsx['Content-Type'] = 'application/vnd.ms-excel'
         xlsx['Content-Disposition'] = 'attachment; filename=student.xlsx'
         message.attach(xlsx)
     # 邮件正文图片-指定图片目录
-    with open('./image/dog.jpg', 'rb') as f:
+    with open('image/dog.jpg', 'rb') as f:
         img_data = f.read()
         img = MIMEImage(img_data)
         # 定义图片 ID，在 HTML 文本中引用
         img.add_header('Content-ID', 'imageid')
         message.attach(img)
     # 图片附件
-    with open('./image/dog2.jpg', 'rb') as f:
+    with open('image/dog2.jpg', 'rb') as f:
         img_data = f.read()
         img = MIMEImage(img_data)
         # 定义图片 ID，在 HTML 文本中引用

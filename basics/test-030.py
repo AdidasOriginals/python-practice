@@ -20,7 +20,7 @@ if resp.status_code == 200:
 print('-' * 20, '获取百度Logo并保存', '-' * 20)
 resp = requests.get('https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png')
 
-with open('./image/baidu.png', 'wb') as file:
+with open('image/baidu.png', 'wb') as file:
     # 通过Response对象的content属性获取服务器返回的二进制内容
     file.write(resp.content)
 print('-' * 20, '开发爬虫/蜘蛛程序', '-' * 20)

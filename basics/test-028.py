@@ -117,7 +117,7 @@ for index, title in enumerate(titles):
     sheet.write(0, index, title, header_style)
 wb.save('./data/test2.xlsx')
 print('-' * 20, '公式计算', '-' * 20)
-wb_for_read = xlrd.open_workbook('./data/read.xlsx')
+wb_for_read = xlrd.open_workbook('data/read.xlsx')
 sheet1 = wb_for_read.sheet_by_index(0)
 nrows, ncols = sheet1.nrows, sheet1.ncols
 wb_for_write = copy(wb_for_read)

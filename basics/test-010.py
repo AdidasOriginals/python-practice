@@ -107,7 +107,7 @@ def game_main3():
     # 设置窗口的背景色(颜色是由红绿蓝三原色构成的元组)
     screen.fill((255, 255, 255))
     # 通过指定的文件名加载图像
-    ball_image = pygame.image.load('./image/ball.png')
+    ball_image = pygame.image.load('image/ball.png')
     # 在窗口上渲染图像
     screen.blit(ball_image, (50, 50))
     # 刷新当前窗口(渲染窗口将绘制的图像呈现出来)

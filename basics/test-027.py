@@ -9,7 +9,7 @@ print('-' * 20, '将数据写入CSV文件', '-' * 20)
 import csv
 import random
 
-with open('./data/scores.csv', 'w', encoding='utf-8') as file:
+with open('data/scores.csv', 'w', encoding='utf-8') as file:
     writer = csv.writer(file)
     # delimiter 指定分隔符（默认是逗号）
     # quotechar 包围值的字符（默认是双引号）
@@ -23,7 +23,7 @@ with open('./data/scores.csv', 'w', encoding='utf-8') as file:
         english = random.randint(30, 100)
         writer.writerow([names[i], verbal, math, english])
 print('-' * 20, '从CSV文件读取数据', '-' * 20)
-with open('./data/scores.csv', 'r', encoding='utf-8') as file:
+with open('data/scores.csv', 'r', encoding='utf-8') as file:
     reader = csv.reader(file, delimiter='|')
     for line in reader:
         print(reader.line_num, end='\t')

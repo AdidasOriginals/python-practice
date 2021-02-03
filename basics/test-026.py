@@ -10,7 +10,7 @@ from PIL import Image
 
 # 1.读取和显示图像
 # 读取图像获取image对象
-image = Image.open('./image/dogcopy2.jpg')
+image = Image.open('image/dogcopy2.jpg')
 # 通过image对象的format属性获取图像的格式
 print(image.format)  # JPEG
 # 通过image对象的size属性获取图像尺寸
@@ -29,9 +29,9 @@ image.thumbnail((128, 128))
 # image.show()
 # 4.缩放和黏贴图像
 # 读取照片1获得Image对象
-dog_image = Image.open('./image/dogcopy.jpg')
+dog_image = Image.open('image/dogcopy.jpg')
 # 读取照片2获得Image对象
-dog2_image = Image.open('./image/dog2.jpg')
+dog2_image = Image.open('image/dog2.jpg')
 dog_head = dog_image.crop((0, 0, 440, 418))
 width, height = dog_head.size
 # 使用Image对象的resize方法修改图像的尺寸
@@ -39,7 +39,7 @@ width, height = dog_head.size
 dog2_image.paste(dog_head.resize((int(width / 1.5), int(height / 1.5))), (172, 40))
 # dog2_image.show()
 # 5.旋转和翻转
-image2 = Image.open('./image/dog2.jpg')
+image2 = Image.open('image/dog2.jpg')
 # 使用Image对象的rotate方法实现图像的旋转
 image2.rotate(45)
 # image2.show()
@@ -59,7 +59,7 @@ from PIL import ImageFilter
 
 # 使用Image对象的filter方法对图像进行滤镜处理
 # ImageFilter模块包含了诸多预设的滤镜也可以自定义滤镜
-image3 = Image.open('./image/dog2.jpg')
+image3 = Image.open('image/dog2.jpg')
 # image3.filter(ImageFilter.CONTOUR).show()
 print('-' * 20, '使用Pillow绘图', '-' * 20)
 import random

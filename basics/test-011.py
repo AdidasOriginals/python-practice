@@ -9,7 +9,7 @@ print('读写文本文件'.center(50, '-'))
 
 
 def main():
-    f = open('./data/python.txt', 'r', encoding='utf-8')
+    f = open('data/python.txt', 'r', encoding='utf-8')
     print(f.read())
     f.close()
 
@@ -36,7 +36,7 @@ def main2():
 # main2()
 def main3():
     try:
-        with open('./data/python.txt', 'r', encoding='utf-8') as f:
+        with open('data/python.txt', 'r', encoding='utf-8') as f:
             print(f.read())
     except FileNotFoundError:
         print('无法打开指定的文件!')
@@ -55,11 +55,11 @@ def main4():
     # encoding='utf-8' 不加报错：
     # UnicodeDecodeError: 'gbk' codec can't decode byte 0xa6 in position 4: illegal multibyte sequence
     # 一次性读取整个文件内容
-    with open('./data/致橡树.txt', 'r', encoding='utf-8') as f:
+    with open('data/致橡树.txt', 'r', encoding='utf-8') as f:
         print(f.read())
     print('-' * 88)
     # 通过for-in循环逐行读取
-    with open('./data/致橡树.txt', mode='r', encoding='utf-8') as f:
+    with open('data/致橡树.txt', mode='r', encoding='utf-8') as f:
         for line in f:
             print(line, end='')
             time.sleep(0.5)
@@ -67,7 +67,7 @@ def main4():
     print('-' * 88)
 
     # 读取文件按行读取到列表中
-    with open('./data/致橡树.txt', encoding='utf-8') as f:
+    with open('data/致橡树.txt', encoding='utf-8') as f:
         lines = f.readlines()
     print(lines)
 
@@ -115,10 +115,10 @@ print('读写二进制文件'.center(50, '-'))
 
 def main6():
     try:
-        with open('./image/dog.jpg', 'rb') as fs1:
+        with open('image/dog.jpg', 'rb') as fs1:
             data = fs1.read()
             print(type(data))  # <class 'bytes'>
-        with open('./image/dog3.jpg', 'wb') as fs2:
+        with open('image/dog3.jpg', 'wb') as fs2:
             fs2.write(data)
     except FileNotFoundError as e:
         print('指定的文件无法打开.')
@@ -145,7 +145,7 @@ def main7():
         ]
     }
     try:
-        with open('./data/test_data.json', 'w', encoding='utf-8') as fs:
+        with open('data/test_data.json', 'w', encoding='utf-8') as fs:
             json.dump(mydict, fs)
     except IOError as e:
         print(e)

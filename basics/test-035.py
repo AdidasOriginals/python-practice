@@ -8,36 +8,36 @@
 print('用Pillow操作图像'.center(50, '*'))
 from PIL import Image
 
-image = Image.open('./image/dog.jpg')
+image = Image.open('image/dog.jpg')
 image.format, image.size, image.mode
 ('JPEG', (500, 750), 'RGB')
 # image.show()
 print('剪裁图像'.center(50, '-'))
-image = Image.open('./image/dog.jpg')
+image = Image.open('image/dog.jpg')
 rect = 80, 20, 310, 360
 image.crop(rect)
 # image.show()
 print('生成缩略图'.center(50, '-'))
-image1 = Image.open('./image/dog.jpg')
+image1 = Image.open('image/dog.jpg')
 size = 128, 128
 image1.thumbnail(size)
 # image1.show()
 print('生成缩略图'.center(50, '-'))
-image2 = Image.open('./image/dog2.jpg')
-image3 = Image.open('./image/dog.jpg')
+image2 = Image.open('image/dog2.jpg')
+image3 = Image.open('image/dog.jpg')
 rect = 0, 0, 440, 418
 dog_head = image3.crop(rect)
 width, height = dog_head.size
 image2.paste(dog_head.resize((int(width / 1.5), int(height / 1.5))), (172, 40))
 # image2.show()
 print('旋转和翻转'.center(50, '-'))
-image4 = Image.open('./image/dog.jpg')
+image4 = Image.open('image/dog.jpg')
 image4.rotate(180)
 # image4.show()
 image4.transpose(Image.FLIP_LEFT_RIGHT)
 # image4.show()
 print('操作像素'.center(50, '-'))
-image5 = Image.open('./image/dog.jpg')
+image5 = Image.open('image/dog.jpg')
 for x in range(80, 310):
     for y in range(20, 360):
         image5.putpixel((x, y), (128, 128, 128))
@@ -45,7 +45,7 @@ for x in range(80, 310):
 print('滤镜效果'.center(50, '-'))
 from PIL import Image, ImageFilter
 
-image6 = Image.open('./image/dog.jpg')
+image6 = Image.open('image/dog.jpg')
 # image6.filter(ImageFilter.CONTOUR).show()
 
 

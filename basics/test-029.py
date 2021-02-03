@@ -21,10 +21,10 @@ page = reader.getPage(0)
 page.rotateClockwise(90)
 writer = PyPDF2.PdfFileWriter()
 writer.addPage(page)
-with open('./data/write_pdf.pdf', 'wb') as file:
+with open('data/write_pdf.pdf', 'wb') as file:
     writer.write(file)
 print('-' * 20, '加密PDF文件', '-' * 20)
-with open('./data/demo.pdf', 'rb')as file:
+with open('data/demo.pdf', 'rb')as file:
     # 通过PdfReader读取未加密的PDF文档
     reader = PyPDF2.PdfFileReader(file)
     writer = PyPDF2.PdfFileWriter()
@@ -35,7 +35,7 @@ with open('./data/demo.pdf', 'rb')as file:
     # 通过PdfWriter的encrypt方法加密PDF文档
     writer.encrypt('dog')
     # 将加密后的PDF文档写入指定的文件中
-    with open('./data/write_pdf3.pdf', 'wb') as file2:
+    with open('data/write_pdf3.pdf', 'wb') as file2:
         writer.write(file2)
 print('-' * 20, '创建PDF文件', '-' * 20)
 import random
@@ -50,12 +50,12 @@ from reportlab.pdfbase.ttfonts import TTFont
 # pdfmetrics.registerFont(TTFont('STSONG', './STSONG.TTF'))
 pdfmetrics.registerFont(TTFont("SimSun", "SimSun.ttf"))
 # 创建Canvas对象（PDF文档对象）
-doc = canvas.Canvas('./data/demo.pdf', pagesize=A4)
+doc = canvas.Canvas('data/demo.pdf', pagesize=A4)
 # 获取A4纸的尺寸
 width, height = A4
 print(width, height)
 # 读取图像
-image = canvas.ImageReader('./image/dog2.jpg')
+image = canvas.ImageReader('image/dog2.jpg')
 # 通过PDF文档对象的drawImage绘制图像内容
 doc.drawImage(image, 50, 200, 500, 400)
 # 设置字体和颜色
