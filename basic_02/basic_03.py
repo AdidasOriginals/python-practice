@@ -123,18 +123,28 @@ def singleton(cls):
 class President:
     """总统(单例类)"""
 
-    def __init__(self, name, age):
+    def __init__(self, name, country):
         self.name = name
-        self.age = age
+        self.country = country
+
+    def __str__(self):
+        return f'{self.country}: {self.name}'
 
 
 # id一致
-p1 = President('A', 55)
-print(id(p1))
-print(p1.name)
-p2 = President('B', 66)
-print(id(p2))
-print(p2.name)
+def main():
+    print(President.__name__)
+    p1 = President('特朗普', '美国')
+    p2 = President('奥巴马', '美国')
+    print(id(p1))
+    print(id(p2))
+    print(p1 == p2)
+    print(p1)
+    print(p2)
+
+
+main()
+
 # 线程安全的单例装饰器。
 from functools import wraps
 from threading import RLock
