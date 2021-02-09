@@ -67,6 +67,7 @@ for val in fib2(10):
 print('生成器进化为协程'.center(50, '-'))
 
 
+# 调用方通过生成器的send方法发送消息，并返回yield产出的值
 def calc_avg():
     """流式计算平均值"""
     total, counter = 0, 0
