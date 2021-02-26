@@ -32,4 +32,10 @@ urlpatterns = [
     path('check/', views.check_unique),
     path('mobilecode/<str:tel>/', views.get_mobilecode),
     path('logout/', views.logout),
+    path('report/', views.report),
+    path('excel/', views.export_teachers_excel),
+    path('pdf/', views.export_pdf),
+    path('teachers_data/', views.get_teachers_data),
+    path('bar/', views.get_bar_data),
+
 ]

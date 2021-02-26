@@ -122,8 +122,13 @@
                 }
             }).then(resp => resp.json())
                 .then(json => {
-                    this.subject = json.subject
-                    this.teachers = json.teachers
+                    if (json.code) {
+                        this.subject = json.subject
+                        this.teachers = json.teachers
+                    } else {
+                        alert(json.detail)
+                        location.href = '/static/html/login.html'
+                    }
                 })
         }
     })

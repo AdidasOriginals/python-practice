@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看报表</title>
+    <style>
+        #container {
+            width: 80%;
+            margin: 10px auto;
+        }
+
+        a {
+            text-decoration: none;
+            color: darkcyan;
+        }
+
+        #main {
+            width: 600px;
+            height: 400px;
+        }
+
+        #main2 {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <a href="/excel/">导出Excel报表</a>
+    <a href="/pdf/">导出pdf</a>
+    <hr>
+    <div id="main"></div>
+    <div id="main2"></div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/4.8.0/echarts.min.js"></script>
+<script>
+    let myChart = echarts.init(document.querySelector('#main'))
+    fetch('/bar/')
+        .then(resp => resp.json())
+        .then(json => {
+            let option = {
+                title: {
+                    text: '老师得票统计图'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['好评', '差评']
+                },
+                xAxis: {
+                    data: json.x
+                },
+                yAxis: {},
+                series: [
+                    {
+                        name: '好评',
+                        type: 'bar',
+                        data: json.y1
+                    },
+                    {
+                        name: '差评',
+                        type: 'bar',
+                        data: json.y2
+                    },
+                ]
+            }
+            myChart.setOption(option)
+        })
+    let myChart2 = echarts.init(document.querySelector('#main2'))
+    fetch('/teachers_data/')
+        .then(resp => resp.json())
+        .then(json => {
+            let option = {
+                color: ['#f00', '#00f'],
+                title: {
+                    text: '老师评价统计图'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['好评2', '差评2']
+                },
+                xAxis: {
+                    data: json.teacher_names
+                },
+                yAxis: {},
+                series: [
+                    {
+                        name: '好评2',
+                        type: 'bar',
+                        data: json.good
+                    },
+                    {
+                        name: '差评2',
+                        type: 'bar',
+                        data: json.bad
+                    },
+                ]
+            }
+            myChart2.setOption(option)
+        })
+</script>
+</body>
+</html>

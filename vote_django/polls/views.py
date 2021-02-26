@@ -19,6 +19,12 @@ from polls.serializers import SubjectSerializer, TeacherSerializer, SubjectSimpl
 from rest_framework.decorators import api_view, authentication_classes
 from rest_framework.response import Response
 from jwt import InvalidTokenError
+import xlwt
+from io import BytesIO
+from urllib.parse import quote
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
 
 
 def show_subjects(request):
@@ -192,3 +198,72 @@ def get_mobilecode(request, tel):
     else:
         data = {'code': 30001, 'message': '请输入有效的手机号'}
     return JsonResponse(data)
+
+
+def report(request):
+    return render(request, 'report.html')
+
+
+def export_teachers_excel(request):
+    # 创建工作簿
+    wb = xlwt.Workbook()
+    # 添加工作表
+    sheet = wb.add_sheet('老师信息表')
+    # 查询所有老师的信息
+    queryset = Teacher.objects.all()
+    # 向Excel表单中写入表头
+    colnames = ('姓名', '介绍', '好评数', '差评数', '学科')
+    for index, name in enumerate(colnames):
+        sheet.write(0, index, name)
+    # 向单元格中写入老师的数据
+    props = ('name', 'intro', 'gcount', 'bcount', 'subject')
+    for row, teacher in enumerate(queryset):
+        for col, prop in enumerate(props):
+            value = getattr(teacher, prop, '')
+            if isinstance(value, Subject):
+                value = value.name
+            sheet.write(row + 1, col, value)
+    # 保存Excel
+    buffer = BytesIO()
+    wb.save(buffer)
+    # 将二进制数据写入响应的消息体中并设置MIME类型
+    resp = HttpResponse(buffer.getvalue(), content_type='application/vnd.ms-excel')
+    # 中文文件名需要处理成百分号编码
+    filename = quote('老师信息.xls', encoding='utf-8')
+    # 通过响应头告知浏览器下载该文件以及对应的文件名
+    resp['content-disposition'] = f'attachment; filename*=utf-8\'\'{filename}'
+    return resp
+
+
+def export_pdf(request: HttpRequest) -> HttpResponse:
+    buffer = BytesIO()
+    pdfmetrics.registerFont(TTFont("SimSun", "SimSun.ttf"))
+    pdf = canvas.Canvas(buffer)
+    pdf.setFont("SimSun", 80)
+    pdf.setFillColorRGB(0.2, 0.5, 0.3)
+    pdf.drawString(100, 500, '支持中文')
+    pdf.showPage()
+    pdf.save()
+    resp = HttpResponse(buffer.getvalue(), content_type='application/pdf')
+    resp['content-disposition'] = 'inline; filename="demo.pdf"'
+    return resp
+
+
+def get_teachers_data(request):
+    queryset = Teacher.objects.all()
+    names = [teacher.name for teacher in queryset]
+    good_counts = [teacher.gcount for teacher in queryset]
+    bad_counts = [teacher.bcount for teacher in queryset]
+    return JsonResponse({'teacher_names': names, 'good': good_counts, 'bad': bad_counts})
+
+
+def get_bar_data(request):
+    teachers = Teacher.objects.all() \
+                   .only('name', 'gcount', 'bcount') \
+                   .order_by('-gcount')[:5]
+    x_data, y1_data, y2_data = [], [], []
+    for teacher in teachers:
+        x_data.append(teacher.name)
+        y1_data.append(teacher.gcount)
+        y2_data.append(teacher.bcount)
+    return JsonResponse({'x': x_data, 'y1': y1_data, 'y2': y2_data})
