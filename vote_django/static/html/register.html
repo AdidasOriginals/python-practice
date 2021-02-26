@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <style>
+        #container {
+            width: 520px;
+            margin: 20px auto;
+        }
+
+        .input {
+            margin: 20px 20px;
+            width: 450px;
+            height: 40px;
+        }
+
+        .input > label {
+            display: inline-block;
+            width: 150px;
+            text-align: right;
+        }
+
+        a {
+            text-decoration: none;
+            color: darkcyan;
+        }
+
+        form + div {
+            margin-top: 20px;
+        }
+
+        form + div > a {
+            font-size: 1.2em;
+        }
+
+        .button {
+            width: 520px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .button > div {
+            text-align: left;
+            margin: 10px 10px;
+        }
+
+        p.error {
+            font-size: 14px;
+            color: red;
+            height: 16px;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <h1>用户注册</h1>
+    <hr>
+    <p class="error">{{ hint }}</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>用户信息</legend>
+            <div class="input">
+                <label>用户名：</label>
+                <input type="text" name="username" v-model="username" id="username"
+                       required minlength="6" maxlength="20" @blur.prevent="checkUsername()">
+                <span></span>
+            </div>
+            <div class="input">
+                <label>密码：</label>
+                <input type="password" v-model="password">
+            </div>
+            <div class="input mobile">
+                <label>手机号：</label>
+                <input type="tel" name="tel" v-model="tel">
+                <input type="button" id="sendBtn" value="发送验证码" @click.prevent="sendMobileCode()">
+            </div>
+            <div class="input">
+                <label>验证码：</label>
+                <input type="text" name="mobilecode" v-model="mobilecode">
+            </div>
+        </fieldset>
+        <div class="button">
+            <input type="submit" value="注册" @click.prevent="register()">
+            <input type="reset" value="重置">
+            <div>
+                <input type="checkbox" v-model="agreement">
+                我已经同意网站<a href="">用户协议及隐私政策</a>
+            </div>
+        </div>
+    </form>
+    <div>
+        <a href="/">返回首页</a>
+        <a href="/static/html/login.html">返回登录</a>
+    </div>
+</div>
+<script src="/static/js/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+<script>
+    let app = new Vue({
+        el: '#container',
+        data: {
+            hint: '',
+            username: '',
+            password: '',
+            tel: '',
+            mobilecode: '',
+            agreement: ''
+        },
+        methods: {
+            register() {
+                console.log(JSON.stringify({
+                    username: this.username,
+                    password: this.password,
+                    tel: this.tel,
+                    agreement: this.agreement,
+                    mobilecode: this.mobilecode,
+                }));
+                fetch('/register/', {
+                    method: 'post',
+                    body: JSON.stringify({
+                        username: this.username,
+                        password: this.password,
+                        tel: this.tel,
+                        agreement: this.agreement,
+                        mobilecode: this.mobilecode
+                    }),
+                    headers: {'content-type': 'application/json'}
+                }).then(resp => resp.json()).then(json => {
+                    if (json.code === 30000) {
+                        location.href = '/static/html/login.html'
+                    } else {
+                        this.hint = json.mesg
+                        this.username = ''
+                        this.password = ''
+                        this.tel = ''
+                    }
+                })
+            },
+            sendMobileCode() {
+                if (/^1[3-9]\d{9}$/.test(this.tel)) {
+                    // 异步请求获取手机验证码
+                    // - 路径参数：---> /mobilecode/13100112233/ ---> ???
+                    // - 查询参数：---> /mobilecode/?tel=13100112233 ---> request.GET['tel']
+                    fetch('/mobilecode/' + this.tel + '/')
+                        .then(resp => resp.json())
+                        .then(json => {
+                            if (json.code == 30000) {
+                                this.mobilecode = json.data
+                            }
+                        })
+                } else {
+                    alert('请输入有效的手机号')
+                }
+            },
+            checkUsername() {
+                if (/^\w{4,20}$/.test(this.username)) {
+                    $.getJSON('/check/?username=' + this.username, json => {
+                        if (json.is_valid) {
+                            $("#username").next().text('✔︎').css('color', 'green')
+                        } else {
+                            $("#username").next().text('✘︎').css('color', 'red')
+                        }
+                    })
+                } else {
+                    $("#username").next().text('✘︎').css('color', 'red')
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>
